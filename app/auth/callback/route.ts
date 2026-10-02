@@ -1,0 +1,5 @@
+import {cookies} from 'next/headers';
+import {supabaseUser,checked} from '@/lib/supabase';
+import {currentAccount,digest} from '@/lib/auth';
+import {db,runtime} from '@/lib/store';
+export async function GET(req:Request){const base=new URL(String(runtime().APP_URL||req.url)).origin;try{const code=new URL(req.url).searchParams.get('code');if(!code)throw new Error('Missing recovery code.');const client=await supabaseUser();const {error}=await client.auth.exchangeCodeForSession(code);if(error)throw error;const account=await currentAccount(client);if(!account)throw new Error('Workspace unavailable.');const nonce=crypto.randomUUID();checked(await db().from('gwppro_auth_limits').insert({id:await digest('recovery:'+account.id+':'+nonce),attempts:0,expires:Date.now()+600000}));const jar=await cookies();jar.set('gwppro-recovery',nonce,{httpOnly:true,secure:base.startsWith('https:'),sameSite:'lax',path:'/',maxAge:600});return Response.redirect(base+'/login?reset=1',303);}catch{return Response.redirect(base+'/login?error=recovery',303);}}

@@ -1,0 +1,2 @@
+import {all,runtime} from './store';
+export async function contactInfo(){let profile:any={};try{profile=(await all('setting'))[0]||{};}catch{}const raw=String(profile.whatsapp||runtime().WHATSAPP_NUMBER||'');const digits=raw.replace(/[+\s()-]/g,'');const whatsapp=/^[1-9]\d{7,14}$/.test(digits)?digits:'';const candidate=String(profile.contactEmail||runtime().CONTACT_EMAIL||runtime().ADMIN_EMAIL||'');const email=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(candidate)?candidate:'';return {email,whatsapp,location:String(profile.location||'Uganda · Working worldwide').slice(0,100)};}

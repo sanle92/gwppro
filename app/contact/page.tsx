@@ -1,0 +1,7 @@
+import PublicHeader from '../public-header';
+import PublicFooter from '../public-footer';
+import ContactForm from './contact-form';
+import {contactInfo} from '@/lib/contact';
+import {Mail,MapPin,MessageCircle} from 'lucide-react';
+export const metadata={title:'Contact — gwppro',description:'Discuss a website, online store or business system with gwppro.'};
+export default async function Contact(){const c=await contactInfo();return <main className="public"><PublicHeader/><section className="contact-intro"><span className="eyebrow">LET’S TALK</span><h1>A useful conversation.<br/><span className="heading-dot">A clear next step.</span></h1><p>Have a new idea, need help with your store, or want to improve an existing system? Tell me about it.</p></section><div className="contact-layout"><aside><div className="contact-method"><Mail size={22}/><div><h3>Email</h3><a href={'mailto:'+c.email}>{c.email}</a></div></div><div className="contact-method"><MapPin size={22}/><div><h3>Working worldwide</h3><p>{c.location}</p></div></div>{c.whatsapp&&<div className="contact-method"><MessageCircle size={22}/><div><h3>Prefer WhatsApp?</h3><a href={'https://wa.me/'+c.whatsapp} target="_blank" rel="noopener noreferrer">Open a conversation</a></div></div>}<div className="contact-note"><h3>Already a client?</h3><p>Keep project documents and conversations together in your client portal.</p><a className="secondary" href="/portal">Open client portal</a></div></aside><ContactForm/></div><PublicFooter/></main>}

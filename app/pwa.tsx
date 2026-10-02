@@ -1,0 +1,3 @@
+'use client';
+import {useEffect} from 'react';
+export default function PWA(){useEffect(()=>{if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js',{scope:'/'}).then(reg=>{reg.update().catch(()=>{});}).catch(()=>{});const offline=()=>document.documentElement.dataset.offline=String(!navigator.onLine);offline();window.addEventListener('online',offline);window.addEventListener('offline',offline);return()=>{window.removeEventListener('online',offline);window.removeEventListener('offline',offline);};},[]);return <div className="offline-banner" role="status">You’re offline. Reconnect to see current workspace data.</div>;}

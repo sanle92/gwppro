@@ -1,0 +1,5 @@
+import {all,one} from './store';
+const clientKinds=new Set(['project','task','proposal','invoice','message','file','inquiry']);
+const linkedKinds=new Set(['task','proposal','invoice','message','file']);
+export async function clientRecords(email:string){email=email.trim().toLowerCase();const records=await all(undefined,email);const projects=new Set(records.filter(r=>r.kind==='project').map(r=>r.id));return records.filter(r=>clientKinds.has(r.kind)&&(r.kind!=='proposal'||['Sent','Accepted'].includes(r.status))&&(!linkedKinds.has(r.kind)||!r.projectId||projects.has(r.projectId)));}
+export async function ownsRecord(record:any,email:string){if(!record||record.email!==email.trim().toLowerCase()||!clientKinds.has(record.kind)||record.kind==='proposal'&&!['Sent','Accepted'].includes(record.status))return false;if(linkedKinds.has(record.kind)&&record.projectId){const project=await one(record.projectId);return !!project&&project.kind==='project'&&project.email===email.trim().toLowerCase();}return true;}

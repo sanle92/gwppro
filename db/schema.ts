@@ -1,0 +1,9 @@
+import { sqliteTable, text, integer, index } from 'drizzle-orm/sqlite-core';
+export const records = sqliteTable('records', { id: text('id').primaryKey(), kind: text('kind').notNull(), email: text('email').notNull().default(''), data: text('data').notNull(), created: text('created').notNull(), updated: text('updated').notNull() }, t => [index('idx_records_kind_email').on(t.kind,t.email)]);
+export const payments = sqliteTable('payments', { id:text('id').primaryKey(), invoice:text('invoice').notNull(), token:text('token').notNull().unique(), status:text('status').notNull(), created:text('created').notNull() });
+export const accounts = sqliteTable('accounts',{email:text('email').primaryKey(),name:text('name').notNull(),role:text('role').notNull(),password:text('password').notNull(),created:text('created').notNull()});
+export const sessions = sqliteTable('sessions',{hash:text('hash').primaryKey(),email:text('email').notNull(),expires:integer('expires').notNull()},t=>[index('idx_sessions_email').on(t.email)]);
+export const invitations = sqliteTable('invitations',{hash:text('hash').primaryKey(),email:text('email').notNull(),expires:integer('expires').notNull()},t=>[index('idx_invites_email').on(t.email)]);
+export const authLimits = sqliteTable('auth_limits',{id:text('id').primaryKey(),attempts:integer('attempts').notNull(),expires:integer('expires').notNull()});
+export const notifications = sqliteTable('notifications',{id:text('id').primaryKey(),email:text('email').notNull(),title:text('title').notNull(),record:text('record').notNull(),kind:text('kind').notNull(),created:text('created').notNull(),read:integer('read').notNull().default(0)},t=>[index('idx_notifications_email').on(t.email,t.created)]);
+export const subscriptions = sqliteTable('subscriptions',{endpoint:text('endpoint').primaryKey(),email:text('email').notNull(),data:text('data').notNull()},t=>[index('idx_subscriptions_email').on(t.email)]);

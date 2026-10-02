@@ -1,0 +1,28 @@
+# Required Supabase connection; server values only.
+SUPABASE_URL=https://wqztuxifwuzzexdwfuac.supabase.co
+SUPABASE_PUBLISHABLE_KEY=
+SUPABASE_SECRET_KEY=
+ADMIN_EMAIL=sanleyapi@gmail.com
+APP_URL=https://gwppro.sanleyapi.chatgpt.site
+# Required for owner setup/recovery. Generate and store privately, never commit.
+OWNER_SETUP_TOKEN=
+# Optional providers and public contact details
+CONTACT_EMAIL=info@gwppro.com
+WHATSAPP_NUMBER=256731753317
+# Stripe hosted checkout; use sk_test_... for testing, sk_live_... for production.
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+# Optional manual methods. Leave blank to hide. Include recipient, currency,
+# and for crypto the exact token/network/address. Admin verifies every payment.
+PAYPAL_PAYMENT_INSTRUCTIONS=
+BANK_PAYMENT_INSTRUCTIONS=
+BINANCE_PAYMENT_INSTRUCTIONS=
+CRYPTO_PAYMENT_INSTRUCTIONS=
+RESEND_API_KEY=
+EMAIL_FROM=
+BRAVE_API_KEY=
+PAGESPEED_API_KEY=
+OPENAI_API_KEY=
+OPENAI_MODEL=
+VAPID_PUBLIC_KEY=
+VAPID_PRIVATE_KEY=

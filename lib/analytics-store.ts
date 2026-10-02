@@ -1,0 +1,5 @@
+import {db} from './store';import {checked} from './supabase';import {Visit,summarize} from './analytics';
+export async function sessionExists(id:string,visitor:string,since:string){return !!checked(await db().from('gwppro_analytics_sessions').select('id').eq('id',id).eq('visitor',visitor).gte('last_seen',since).maybeSingle());}
+export async function track(v:Visit,event:string|null){checked(await db().rpc('gwppro_track_visit',{p_visit:v,p_event:event}));}
+async function rows(table:string,since:string,column:string){const out:any[]=[];for(let i=0;;i+=1000){const batch=checked(await db().from(table).select('*').gte(column,since).order(column,{ascending:false}).order('id').range(i,i+999))||[];out.push(...batch);if(batch.length<1000)return out;}}
+export async function report(since:string,page:number){const [sessions,events,live]=await Promise.all([rows('gwppro_analytics_sessions',since,'started'),rows('gwppro_analytics_events',since,'created'),rows('gwppro_analytics_sessions',new Date(Date.now()-90000).toISOString(),'last_seen')]);sessions.sort((a,b)=>b.last_seen.localeCompare(a.last_seen));return summarize(sessions,events,live,page,sessions.length);}
